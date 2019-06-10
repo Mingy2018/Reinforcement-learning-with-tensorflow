@@ -27,6 +27,7 @@ def update():
 
             # RL choose action based on observation
             action = RL.choose_action(str(observation))
+            # str() can act as the index
 
             # RL take action and get next observation and reward
             observation_, reward, done = env.step(action)
