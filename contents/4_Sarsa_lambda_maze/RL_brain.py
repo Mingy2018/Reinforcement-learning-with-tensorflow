@@ -49,11 +49,12 @@ class RL(object):
 # backward eligibility traces
 class SarsaLambdaTable(RL): # 类继承, from class RL
     def __init__(self, actions, learning_rate=0.01, reward_decay=0.9, e_greedy=0.9, trace_decay=0.9):
-        super(SarsaLambdaTable, self).__init__(actions, learning_rate, reward_decay, e_greedy)
-
+        super(SarsaLambdaTable, self).__init__(actions, learning_rate, reward_decay, e_greedy) # 此处继承父类的属性
+        
+        # the new properties:
         # backward view, eligibility trace.
-        self.lambda_ = trace_decay
-        self.eligibility_trace = self.q_table.copy()
+        self.lambda_ = trace_decay # sarsa lambda
+        self.eligibility_trace = self.q_table.copy() # 经历次数-Table; ~ state&action -> +1
 
     def check_state_exist(self, state):
         if state not in self.q_table.index:
@@ -79,10 +80,10 @@ class SarsaLambdaTable(RL): # 类继承, from class RL
 
         # increase trace amount for visited state-action pair
 
-        # Method 1:
+        # Method 1: accummulating trace: 动作状态次数表没有限制
         # self.eligibility_trace.loc[s, a] += 1
 
-        # Method 2:
+        # Method 2: replacing trace, 不可或缺性！？
         self.eligibility_trace.loc[s, :] *= 0
         self.eligibility_trace.loc[s, a] = 1
 
